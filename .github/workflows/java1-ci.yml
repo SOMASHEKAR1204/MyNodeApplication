@@ -1,29 +1,12 @@
-name: Java CI - Auto Run HelloWorld
+      - name: Compile Java (handle spaces)
+        run: |
+          file_path="$(find . -type f -name 'HelloWorld.java')"
+          echo "Compiling file: $file_path"
+          javac "$file_path"
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - name: Run HelloWorld (handle spaces)
+        run: |
+          class_dir="$(dirname $(find . -type f -name 'HelloWorld.class'))"
+          echo "Running class from: $class_dir"
+          java -cp "$class_dir" HelloWorld
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Compile Java
-        run: javac $(find . -name "HelloWorld.java")
-
-      - name: Run HelloWorld
-        run: java -cp $(dirname $(find . -name "HelloWorld.class")) HelloWorld
