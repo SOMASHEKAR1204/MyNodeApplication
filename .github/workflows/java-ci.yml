@@ -3,7 +3,7 @@ name: Java CI - Auto Run HelloWorld
 on:
   push:
     branches:
-      - main  # Automatically runs whenever code is pushed to main branch
+      - main
   pull_request:
     branches:
       - main
@@ -13,21 +13,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout your repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Set up Java 17
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      # Step 3: Compile HelloWorld.java
       - name: Compile Java
-        run: javac HelloWorld.java
+        run: javac $(find . -name "HelloWorld.java")
 
-      # Step 4: Run HelloWorld.java
       - name: Run HelloWorld
-        run: java HelloWorld
+        run: java -cp $(dirname $(find . -name "HelloWorld.class")) HelloWorld
+
